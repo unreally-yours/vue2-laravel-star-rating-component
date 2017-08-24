@@ -15,11 +15,11 @@
 
 <style lang="less">
 .trans{
-	-webkit-transition	:all 255ms ease-in-out;
-	-moz-transition		:all 255ms ease-in-out;
-	-ms-transition		:all 255ms ease-in-out;
-	-o-transition		:all 255ms ease-in-out;
-	transition			:all 255ms ease-in-out;
+	-webkit-transition	:color 255ms ease-in-out;
+	-moz-transition		:color 255ms ease-in-out;
+	-ms-transition		:color 255ms ease-in-out;
+	-o-transition		:color 255ms ease-in-out;
+	transition			:color 255ms ease-in-out;
 }
 .vue-star-rating{
 	.rating-star{
