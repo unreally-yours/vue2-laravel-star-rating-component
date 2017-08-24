@@ -1,5 +1,12 @@
 <template>
+	<div v-if="$attrs.disabled" class="vue-star-rating">
+		<div class="rating-star" 
+			v-for="star in stars"
+			v-bind:class="['rating-star',star.highlight?'highlight':'',star.active?'active':'']" 
+			>★</div>
+	</div>
 	<div 
+		v-else
 		class="vue-star-rating"
 		v-bind:value="value"
 	>
@@ -45,7 +52,7 @@ export default{
 			{
 				id:0,
 				highlight:false,
-				active:true
+				active:false
 			},{
 				id:1,
 				highlight:false,
@@ -77,49 +84,37 @@ export default{
 		}
 	},
 	methods:{
-		enabled:function(){
-			if(typeof this.$attrs.disabled!='NaN'&&this.$attrs.disabled){
-				return false;
-			}
-			return true;
-		},
 		over:function(star){
-			if(this.enabled()){
-				if(star.active){
-					for(var i=star.id+1;this.stars[i];i++){
-						this.stars[i].highlight=false;
-					}
-				}else{
-					for(var i in this.stars){
-						if(i<=star.id){
-							this.stars[i].highlight=true;
-						}else{
-							break;
-						}
+			if(star.active){
+				for(var i=star.id+1;this.stars[i];i++){
+					this.stars[i].highlight=false;
+				}
+			}else{
+				for(var i in this.stars){
+					if(i<=star.id){
+						this.stars[i].highlight=true;
+					}else{
+						break;
 					}
 				}
 			}
 		},
 		out:function(star){
-			if(this.enabled()){
-				for(var i in this.stars){
-					if(this.stars[i].active){
-						this.stars[i].highlight=true;
-					}else{
-						this.stars[i].highlight=false;
-					}
+			for(var i in this.stars){
+				if(this.stars[i].active){
+					this.stars[i].highlight=true;
+				}else{
+					this.stars[i].highlight=false;
 				}
 			}
 		},
 		click:function(star){
-			if(this.enabled()){
-				this.value=star.id;
-				for(var i in this.stars){
-					if(i<=star.id){
-						this.stars[i].active=true;
-					}else{
-						this.stars[i].active=false;
-					}
+			this.value=star.id;
+			for(var i in this.stars){
+				if(i<=star.id){
+					this.stars[i].active=true;
+				}else{
+					this.stars[i].active=false;
 				}
 			}
 		}
