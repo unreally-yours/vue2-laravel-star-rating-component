@@ -32,7 +32,6 @@
 	.rating-star{
 		.trans;
 		float:left;
-		font-size:2vw;
 		color:#999;
 		&.highlight{
 			color:red;
@@ -73,17 +72,23 @@ export default{
 		]
 	}),
 	created(){
-		for(var i in this.stars){
-			if(this.$attrs.value>=i){
-				this.stars[i].active=true;
-				this.stars[i].highlight=true;
-				this.value=this.$attrs.value;
-			}else{
-				break;
-			}
+		if(typeof this.$attrs.value!='undefined'){
+			this.init(this.$attrs.value);
 		}
 	},
 	methods:{
+		init:function(value){
+			for(var i in this.stars){
+				if(value>=i){
+					this.stars[i].active=true;
+					this.stars[i].highlight=true;
+				}else{
+					this.stars[i].active=false;
+					this.stars[i].highlight=false;
+				}
+			}
+			this.value=value;
+		},
 		over:function(star){
 			if(star.active){
 				for(var i=star.id+1;this.stars[i];i++){
@@ -117,6 +122,14 @@ export default{
 					this.stars[i].active=false;
 				}
 			}
+			axios.get('/ajax/star_rating/add',{params:{
+				id:this.$attrs.id,
+				source:this.$attrs.source,
+				rating:this.value
+			}}).then(response=>{
+				this.init(response.data.rating);
+				this.$attrs.disabled=true;
+			});
 		}
 	}
 }
