@@ -1,1 +1,1 @@
-# vue2-star-rating-component
+# Laravel / vue2 star-rating-component
