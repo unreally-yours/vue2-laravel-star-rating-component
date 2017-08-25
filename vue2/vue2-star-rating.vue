@@ -37,6 +37,11 @@
 			color:red;
 		}
 	}
+	&:not([disabled='disabled']){
+		.rating-star{
+			cursor:pointer;
+		}
+	}
 	&[disabled='disabled']{
 		opacity:0.66;
 	}
@@ -79,13 +84,8 @@ export default{
 	methods:{
 		init:function(value){
 			for(var i in this.stars){
-				if(value>=i){
-					this.stars[i].active=true;
-					this.stars[i].highlight=true;
-				}else{
-					this.stars[i].active=false;
-					this.stars[i].highlight=false;
-				}
+				this.stars[i].active=(value>=i)?true:false;
+				this.stars[i].highlight=(value>=i)?true:false;
 			}
 			this.value=value;
 		},
@@ -106,24 +106,16 @@ export default{
 		},
 		out:function(star){
 			for(var i in this.stars){
-				if(this.stars[i].active){
-					this.stars[i].highlight=true;
-				}else{
-					this.stars[i].highlight=false;
-				}
+				this.stars[i].highlight=this.stars[i].active?true:false;
 			}
 		},
 		click:function(star){
 			this.value=star.id;
 			for(var i in this.stars){
-				if(i<=star.id){
-					this.stars[i].active=true;
-				}else{
-					this.stars[i].active=false;
-				}
+				this.stars[i].active=(i<=star.id)?true:false;
 			}
 			axios.get('/ajax/star_rating/add',{params:{
-				id:this.$attrs.id,
+				source_id:this.$attrs.id,
 				source:this.$attrs.source,
 				rating:this.value
 			}}).then(response=>{
