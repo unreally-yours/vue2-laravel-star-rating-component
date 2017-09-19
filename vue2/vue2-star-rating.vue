@@ -1,56 +1,18 @@
 <template>
 	<div v-if="$attrs.disabled" class="vue-star-rating">
-		<div class="rating-star" 
-			v-for="star in stars"
-			v-bind:class="['rating-star',star.highlight?'highlight':'',star.active?'active':'']" 
-			>★</div>
+		<div v-if="disabledMessage" class="disabled-message">{{disabledMessageText}}</div>
+		<div v-for="star in stars" @click="disabledMessageShow()" :class="['rating-star',star.highlight?'highlight':'',star.active?'active':'']">★</div>
 	</div>
-	<div 
-		v-else
-		class="vue-star-rating"
-		v-bind:value="value"
-	>
-		<div class="rating-star" 
-			v-for="star in stars"
-			v-on:mouseover="over(star)"
-			v-on:mouseout="out(star)"
-			v-on:click="click(star)"
-			v-bind:class="['rating-star',star.highlight?'highlight':'',star.active?'active':'']" 
-			>★</div>
+	<div v-else	class="vue-star-rating" :value="value">
+		<div v-for="star in stars"	@mouseover="over(star)"	@mouseout="out(star)" @click="click(star)" :class="['rating-star',star.highlight?'highlight':'',star.active?'active':'']">★</div>
 	</div>
 </template>
-
-<style lang="less">
-.trans{
-	-webkit-transition	:color 255ms ease-in-out;
-	-moz-transition		:color 255ms ease-in-out;
-	-ms-transition		:color 255ms ease-in-out;
-	-o-transition		:color 255ms ease-in-out;
-	transition			:color 255ms ease-in-out;
-}
-.vue-star-rating{
-	.rating-star{
-		.trans;
-		float:left;
-		color:#999;
-		&.highlight{
-			color:red;
-		}
-	}
-	&:not([disabled='disabled']){
-		.rating-star{
-			cursor:pointer;
-		}
-	}
-	&[disabled='disabled']{
-		opacity:0.66;
-	}
-}
-</style>
 
 <script>
 export default{
 	data    :()=>({
+		disabledMessage:false,
+		disabledMessageText:'Нельзя проголосовать пока вы не ознакомились с материалом.',
 		value:0,
 		stars 	:[
 			{
@@ -82,14 +44,20 @@ export default{
 		}
 	},
 	methods:{
-		init:function(value){
+		disabledMessageShow :function(){
+			this.disabledMessage=true;
+			setTimeout(function(){
+				this.disabledMessage=false;
+			}.bind(this),3333);
+		},
+		init 		:function(value){
 			for(var i in this.stars){
 				this.stars[i].active=(value>=i)?true:false;
 				this.stars[i].highlight=(value>=i)?true:false;
 			}
 			this.value=value;
 		},
-		over:function(star){
+		over 		:function(star){
 			if(star.active){
 				for(var i=star.id+1;this.stars[i];i++){
 					this.stars[i].highlight=false;
@@ -104,12 +72,12 @@ export default{
 				}
 			}
 		},
-		out:function(star){
+		out 		:function(star){
 			for(var i in this.stars){
 				this.stars[i].highlight=this.stars[i].active?true:false;
 			}
 		},
-		click:function(star){
+		click 		:function(star){
 			this.value=star.id;
 			for(var i in this.stars){
 				this.stars[i].active=(i<=star.id)?true:false;
