@@ -1,6 +1,8 @@
 <template>
 	<div v-if="$attrs.disabled" class="vue-star-rating">
+		<transition name="sr-fade" mode="out-in">
 		<div v-if="disabledMessage" class="disabled-message">{{disabledMessageText}}</div>
+		</transition>
 		<div v-for="star in stars" @click="disabledMessageShow()" :class="['rating-star',star.highlight?'highlight':'',star.active?'active':'']">★</div>
 	</div>
 	<div v-else	class="vue-star-rating" :value="value">
