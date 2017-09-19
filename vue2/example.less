@@ -1,0 +1,34 @@
+.vue-star-rating{
+	position:relative;
+	.rating-star{
+		.trans;
+		float:left;
+		color:#999;
+		&.highlight{
+			color:red;
+		}
+	}
+	&:not([disabled='disabled']){
+		.rating-star{
+			cursor:pointer;
+		}
+	}
+	&[disabled='disabled']{
+		.rating-star{
+			opacity:0.66;
+		}
+	}
+	.disabled-message{
+		.box;
+		.default-font-size;
+		.default-shadow;
+		border:solid 0.05vw #999;
+		border-radius:0.125vw;
+		background-color:white;
+		padding:0.5vw;
+		position:absolute;
+		right:0;
+		width:22vw;
+		z-index:30;
+	}
+}
